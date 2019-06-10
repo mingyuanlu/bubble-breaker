@@ -1,0 +1,4 @@
+update_period_historic=7 #days
+update_period_realtime=1 #days
+number_of_historic_topics=50
+number_of_realtime_topics=50
