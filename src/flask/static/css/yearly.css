@@ -1,0 +1,31 @@
+table {
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid black #ddd;
+}
+
+th, td {
+	height: 30px;
+	padding: 5px;
+	text-align: center;
+	vertical-align: bottom;
+}
+
+tr:hover {background-color: #f5f5f5;}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+th {
+    background-color: #036d78;
+    color: white;
+}
+
+#top-events-table {
+	width: 100%;
+}
+
+.btnPreview {
+
+}

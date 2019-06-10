@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/iframe.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/jquery.smartTab.min.js')}}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/countrySelect.css') }}" />
+<link href="{{ url_for('static', filename='css/smart_tab.css') }}" rel="stylesheet" type="text/css"></link>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hawk Eye</title>
+<style>
+  @import url(http://fonts.googleapis.com/css?family=Amatic+SC:700);
+
+  body{
+      text-align: center;
+  }
+
+  h1{
+      font-family: 'Times New Roman', cursive;
+      font-weight: normal;
+      color: #036d78;
+      font-size: 3em;
+  }
+</style>
+
+</head>
+<body>
+  <table align="center">
+    <td>
+      <img style="height:100px; width:100px; vertical-align: middle;" src="http://hawkeyecrimereporter.com/wp-content/uploads/2016/11/Untitled-2sdas.png">
+    </td>
+    <td style="text-align: left; padding-left: 20px;">
+      <h1 style="display: inline;">Hawk-Eye</h1> <br/>
+      <div style="display: inline;">
+        Get the Hawk's eye vision of the world around you.
+      </div>
+    </td>
+  </table>
+  {% block body %}{% endblock %}
+</body>
+</html>

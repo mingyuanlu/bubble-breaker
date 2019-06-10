@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
+<div class="home-block">
+  <div>
+    <form action="/yearly" method="GET">
+      <input type="text" id="country" name="country"/>
+      <input type="hidden" id="country_code" name="code" />
+      <select name="year" id="year">
+        <option value="2018">2018</option>
+        <option value="2017">2017</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+      </select>
+      <br />
+      <br />
+      <input type="submit" value="Submit" id="submit"/>
+    </form>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/countrySelect.min.js') }}"></script>
+    <script>
+      $("#country").countrySelect();
+    </script>
+  </div>
+</div>
+{% endblock %}
