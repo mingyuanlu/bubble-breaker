@@ -92,6 +92,10 @@ joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*', 
 #joinedDF = mentionDF.join(gkgDF, mentionDF("mention_id") == gkgDF("doc_id"), "inner") #.select("code", "date")
 joinedDF.show()
 
+theme_array = [row.themes for row in joinedDF.collect()]
+print theme_array
+
+
 
 '''
 #Count the number of
