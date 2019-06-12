@@ -44,7 +44,7 @@ mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
                                     mention_doc_tone = x[13],
                                     mention_time_date = x[2],
                                     event_time_date = x[1],
-                                    mention_src_name = x[2]))
+                                    mention_src_name = x[4]))
 
 gkgRDD = sc.textFile(sys.argv[2])
 gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
