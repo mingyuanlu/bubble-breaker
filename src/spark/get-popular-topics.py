@@ -53,7 +53,8 @@ gkgRDD = gkgRDD.map(lambda x: x.split('\t'))
 gkgRowRDD = gkgRDD.map(lambda x : Row(src_common_name = x[3],
                                     doc_id = x[4],
                                     #themes = map(lambda s: s.split(';')[:-1], x[7])
-                                    themes = x[7].map(lambda x: x.split(';')[:-1])
+                                    #themes = x[7].map(lambda x: x.split(';')[:-1])
+                                    themes = x[7].split(';')[:-1]
                                     ))
 
 
