@@ -52,7 +52,7 @@ gkgRDD.cache()
 gkgRDD = gkgRDD.map(lambda x: x.split('\t'))
 gkgRowRDD = gkgRDD.map(lambda x : Row(src_common_name = x[3],
                                     doc_id = x[4],
-                                    themes = x[7]))
+                                    themes = map(lambda s: s.split(';')[:-1], x[7])))
 
 
 
@@ -95,7 +95,8 @@ joinedDF.show()
 theme_array = [row.themes for row in joinedDF.collect()]
 #print theme_array
 #theme_array = []
-joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
+#joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
+joinedDF.select(explode(joinedDF.themes).alias("theme")).collect()
 first10 = joinedDF.take(10)
 for t in first10:
     print t
