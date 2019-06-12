@@ -32,7 +32,7 @@ spark = SparkSession.builder \
     .config("spark.executor.memory", "1gb") \
     .getOrCreate()
 
-sc=spark.sparkContext
+sc=spark.sparkContext()
 
 #dataRDD = sc.textFile('s3a://gdelt-open-data/events/201[4-8]*')
 mentionRDD = sc.textFile(sys.argv[1])
@@ -99,10 +99,10 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #print theme_array
 #theme_array = []
 #joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
-explodedDF = joinedDF.select(explode(joinedDF.themes).alias("theme")).collect()
-first10 = explodedDF.take(10)
-for t in first10:
-    print t
+joinedDF.select(explode(joinedDF.themes).alias("theme")).collect().show()
+#first10 = explodedDF.take(10)
+#for t in first10:
+#    print t
 
 
 
