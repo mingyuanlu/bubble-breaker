@@ -108,7 +108,7 @@ sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
 
 #Get average of tone for each theme
 avgToneDF = sqlContext.sql("""SELECT CAST(mention_id AS INTEGER),
-                            CAST(event_id AS INTEGRER),
+                            CAST(event_id AS INTEGER),
                             mention_time_date,
                             event_time_date,
                             mention_src_name,
