@@ -9,7 +9,7 @@ from pyspark.sql import SparkSession, SQLContext, Row
 import configparser
 from entity_codes import country_names, category_names
 #from configs import cassandra_cluster_ips
-from pyspark.sql.functions import udf, col
+from pyspark.sql.functions import udf, col, explode
 from pyspark.sql.types import StringType
 #from cassandra.cluster import Cluster
 #import pyspark_cassandra
@@ -93,7 +93,12 @@ joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*', 
 joinedDF.show()
 
 theme_array = [row.themes for row in joinedDF.collect()]
-print theme_array
+#print theme_array
+#theme_array = []
+joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
+first10 = joinedDF.take(10)
+for t in first10:
+    print t
 
 
 
