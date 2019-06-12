@@ -87,7 +87,7 @@ for result in top10:
 df1 = mentionDF.alias('df1')
 df2 = gkgDF.alias('df2')
 
-joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*', 'df2.*')
+joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*', 'df2.src_common_name','df2.themes')
 
 #joinedDF = mentionDF.join(gkgDF, mentionDF("mention_id") == gkgDF("doc_id"), "inner") #.select("code", "date")
 joinedDF.show()
