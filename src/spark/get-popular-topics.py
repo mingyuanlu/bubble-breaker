@@ -32,7 +32,7 @@ spark = SparkSession.builder \
     .config("spark.executor.memory", "1gb") \
     .getOrCreate()
 
-sc=spark.sparkContext()
+sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3a://gdelt-open-data/events/201[4-8]*')
 mentionRDD = sc.textFile(sys.argv[1])
