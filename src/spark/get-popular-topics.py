@@ -107,12 +107,19 @@ explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'ment
 sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
 
 #Get average of tone for each theme
-avgToneDF = sqlContext.sql("""SELECT CAST(mention_id AS INTEGER),
+'''
+avgToneDF = sqlContext.sql("""SELECT mention_id,
                             CAST(event_id AS INTEGER),
                             mention_time_date,
                             event_time_date,
                             mention_src_name,
                             src_common_name,
+                            AVG(mention_doc_tone)
+                            FROM temp3
+                            GROUP BY theme
+                            """)
+'''
+avgToneDF = sqlContext.sql("""SELECT
                             AVG(mention_doc_tone)
                             FROM temp3
                             GROUP BY theme
