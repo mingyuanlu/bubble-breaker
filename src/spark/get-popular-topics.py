@@ -84,7 +84,7 @@ top10 = count.take(10)
 for result in top10:
      print("%s: %d") % (result[0], result[1])
 
-joinedDF = mentionDF.join(gkgDF, mentionDF.("mention_id") === gkgDF("doc_id"), "inner")#.select("code", "date")
+joinedDF = mentionDF.join(gkgDF, mentionDF("mention_id") === gkgDF("doc_id"), "inner")#.select("code", "date")
 joinedDF.show()
 
 
