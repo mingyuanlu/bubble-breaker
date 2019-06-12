@@ -99,7 +99,7 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #print theme_array
 #theme_array = []
 #joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
-joinedDF.select(explode(joinedDF.themes).alias("theme")).collect().show()
+joinedDF.select('joinedDF.event_id', 'joinedDF.mention_doc_tone', explode(joinedDF.themes).alias("theme")).collect().show()
 #first10 = explodedDF.take(10)
 #for t in first10:
 #    print t
