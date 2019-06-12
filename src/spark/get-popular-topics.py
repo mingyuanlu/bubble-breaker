@@ -99,8 +99,8 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #print theme_array
 #theme_array = []
 #joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
-joinedDF.select(explode(joinedDF.themes).alias("theme")).collect()
-first10 = joinedDF.take(10)
+explodedDF = joinedDF.select(explode(joinedDF.themes).alias("theme")).collect()
+first10 = explodedDF.take(10)
 for t in first10:
     print t
 
