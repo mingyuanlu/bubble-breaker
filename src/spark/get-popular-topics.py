@@ -48,7 +48,7 @@ mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
                                     mention_src_name = x[4]))
 
 gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/2018072000*.gkg.csv')
-gkgRDD = sc.textFile(sys.argv[2])
+#gkgRDD = sc.textFile(sys.argv[2])
 gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
 gkgRDD.cache()
 gkgRDD = gkgRDD.map(lambda x: x.split('\t'))
