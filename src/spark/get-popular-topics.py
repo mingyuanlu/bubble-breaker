@@ -99,7 +99,26 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #print theme_array
 #theme_array = []
 #joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
-joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
+#joinedDF = joinedDF.select()
+#joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
+explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
+
+#Assume the exploded DF is explodedDF
+sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
+
+#Get average of tone for each theme
+avgToneDF = sqlContext.sql("""SELECT CAST(mention_id AS INTEGER),
+                            CAST(event_id AS INTEGRER),
+                            mention_time_date,
+                            event_time_date,
+                            mention_src_name,
+                            src_common_name,
+                            AVG(mention_doc_tone)
+                            FROM temp3
+                            GROUP BY theme
+                            """)
+
+avgToneDF.show()
 #first10 = explodedDF.take(10)
 #for t in first10:
 #    print t
