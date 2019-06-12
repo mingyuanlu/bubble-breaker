@@ -80,7 +80,7 @@ sqlContext.registerDataFrameAsTable(mentionDF, 'temp1')
 count = mentionDF.groupBy('event_id').count().cache()
 top10 = count.take(10)
 for result in top10:
-     print("%s: %d") % (count[0], count[2])
+     print("%s: %d") % (count[0], count[1])
 
 
 '''
