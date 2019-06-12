@@ -7,11 +7,11 @@ from pyspark.sql import Row
 from pyspark.sql import SparkSession, SQLContext, Row
 import configparser
 from entity_codes import country_names, category_names
-from configs import cassandra_cluster_ips
+#from configs import cassandra_cluster_ips
 from pyspark.sql.functions import udf, col
 from pyspark.sql.types import StringType
-from cassandra.cluster import Cluster
-import pyspark_cassandra
+#from cassandra.cluster import Cluster
+#import pyspark_cassandra
 from enum import Enum
 
 '''
