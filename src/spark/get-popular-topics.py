@@ -17,7 +17,7 @@ from enum import Enum
 from cassandra.cluster import Cluster
 #import pyspark_cassandra
 
-cassandra_cluster_ips = "54.211.70.104"
+cassandra_cluster_ips = ["54.211.70.104"]
 cluster = Cluster(cassandra_cluster_ips)
 
 
