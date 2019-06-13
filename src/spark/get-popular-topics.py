@@ -15,7 +15,7 @@ from pyspark.sql.types import StringType
 #import pyspark_cassandra
 from enum import Enum
 from cassandra.cluster import Cluster
-import pyspark_cassandra
+#import pyspark_cassandra
 
 cassandra_cluster_ips = "54.211.70.104"
 cluster = Cluster(cassandra_cluster_ips)
