@@ -135,6 +135,7 @@ avgToneDF = sqlContext.sql("""SELECT
 
 avgToneDF.show()
 table_name = "test"
+avgTone = avgToneDF.rdd.map(list)
 avgTone.saveToCassandra("bubble-breaker", table_name)
 #first10 = explodedDF.take(10)
 #for t in first10:
