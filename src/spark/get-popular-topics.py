@@ -14,6 +14,12 @@ from pyspark.sql.types import StringType
 #from cassandra.cluster import Cluster
 #import pyspark_cassandra
 from enum import Enum
+from cassandra.cluster import Cluster
+import pyspark_cassandra
+
+cassandra_cluster_ips = "54.211.70.104"
+cluster = Cluster(cassandra_cluster_ips)
+
 
 '''
 def loadTopicNames(listOfFiles):
@@ -128,6 +134,8 @@ avgToneDF = sqlContext.sql("""SELECT
                             """)
 
 avgToneDF.show()
+table_name = "test"
+avgTone.saveToCassandra("bubble-breaker", table_name)
 #first10 = explodedDF.take(10)
 #for t in first10:
 #    print t
