@@ -10,4 +10,4 @@ spark-submit \
   --conf spark.replClassServer.port=51813 \
   --conf spark.blockManager.port=51814 \
   --conf spark.executor.port=51815 \
-  get-popular-topics-test.py
+  compute-avg-tone-per-theme.py
