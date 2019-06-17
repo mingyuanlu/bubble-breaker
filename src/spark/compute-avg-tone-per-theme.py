@@ -172,7 +172,7 @@ avgTone = avgToneDF.rdd.map(list)
 #first10 = explodedDF.take(10)
 #for t in first10:
 #    print t
-
+'''
 db_properties = {}
 config = configparser.ConfigParser()
 config.read("db_properties.ini")
@@ -184,7 +184,7 @@ db_properties['url'] = db_prop['url']
 db_properties['driver'] = db_prop['driver']
 
 testDF.write.jdbc(url=db_url, table='bubblebreaker_schema.tones_table',mode='overwrite',properties=db_properties)
-
+'''
 '''
 #Count the number of
 filteredDF = sqlContext.sql("""SELECT CAST(date AS INTEGER),
