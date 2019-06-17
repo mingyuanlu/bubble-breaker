@@ -55,7 +55,7 @@ spark = SparkSession.builder \
 sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3n://gdelt-open-data/events/201[4-8]*')
-mentionRDD = sc.textFile('s3n://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
+mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
 #mentionRDD = sc.textFile(sys.argv[1])
 mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
 mentionRDD.cache()
