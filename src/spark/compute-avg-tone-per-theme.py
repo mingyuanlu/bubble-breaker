@@ -41,11 +41,12 @@ config = configparser.ConfigParser()
 config.read(os.path.expanduser('~/.aws/credentials'))
 access_id = config.get('default', "aws_access_key_id")
 access_key = config.get('default', "aws_secret_access_key")
+'''
 spark = SparkSession.builder \
     .appName("buuble-breaker") \
     .config("spark.executor.memory", "1gb") \
     .getOrCreate()
-'''
+
 # Set HDFS configurations
 sc=spark.sparkContext
 '''
