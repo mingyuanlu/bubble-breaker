@@ -19,16 +19,16 @@ from enum import Enum
 #import pyspark_cassandra
 import psycopg2
 
-try:
-
-    connection = psycopg2.connect(host='ec2-3-215-225-40.compute-1.amazonaws.com',
-                    user = 'postgres',
-                    password = 'postgres'
-                    )
-    cursor = connection.cursor()
-except:
-    print("Error connecting to database!")
-    exit(1)
+#try:
+#
+#    connection = psycopg2.connect(host='ec2-3-215-225-40.compute-1.amazonaws.com',
+#                    user = 'postgres',
+#                    password = 'postgres'
+#                    )
+#    cursor = connection.cursor()
+#except:
+#    print("Error connecting to database!")
+#    exit(1)
 
 
 #cassandra_cluster_ips = ["54.211.70.104"]
@@ -176,7 +176,7 @@ avgTone = avgToneDF.rdd.map(list)
 db_properties = {}
 config = configparser.ConfigParser()
 config.read("db_properties.ini")
-db_prop = config['postgres']
+db_prop = config['postgresql']
 db_url = db_prop['url']
 db_properties['username'] = db_prop['username']
 db_properties['password'] = db_prop['password']
