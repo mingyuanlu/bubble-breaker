@@ -36,6 +36,7 @@ import psycopg2
 
 
 # Set Spark configurations
+'''
 config = configparser.ConfigParser()
 config.read(os.path.expanduser('~/.aws/credentials'))
 access_id = config.get('default', "aws_access_key_id")
@@ -44,14 +45,15 @@ spark = SparkSession.builder \
     .appName("buuble-breaker") \
     .config("spark.executor.memory", "1gb") \
     .getOrCreate()
-
+'''
 # Set HDFS configurations
 sc=spark.sparkContext
+'''
 hadoop_conf=sc._jsc.hadoopConfiguration()
 hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 hadoop_conf.set("fs.s3a.access.key", access_id)
 hadoop_conf.set("fs.s3a.secret.key", access_key)
-
+'''
 #hadoop_conf.set("fs.s3a.access.key", access_id)
 #hadoop_conf.set("fs.s3a.secret.key", access_key)
 
@@ -155,7 +157,7 @@ explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'ment
 #resultDF = themeDF.select('theme', themeDF.count().alias('num_mentions'), #themeDF.agg(avg(col('mention_doc_tone'))).alias('avg'),
 #themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
 #
-sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:55')]
+sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:55g')]
 testDF = sqlContext.createDataFrame(sampleData, schema=["theme","num_mentions","avg","quantiles","bin_vals","time"])
 testDF.show()
 
