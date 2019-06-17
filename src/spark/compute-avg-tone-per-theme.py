@@ -9,16 +9,31 @@ from pyspark.sql import SparkSession, SQLContext, Row
 import configparser
 from entity_codes import country_names, category_names
 #from configs import cassandra_cluster_ips
-from pyspark.sql.functions import udf, col, explode
+from pyspark.sql.functions import udf, col, explode, avg
+from pyspark.sql import DataFrameStatFunctions as statFunc
 from pyspark.sql.types import StringType
 #from cassandra.cluster import Cluster
 #import pyspark_cassandra
 from enum import Enum
-from cassandra.cluster import Cluster
+#from cassandra.cluster import Cluster
 #import pyspark_cassandra
+import psycopg2
 
-cassandra_cluster_ips = ["54.211.70.104"]
-cluster = Cluster(cassandra_cluster_ips)
+try:
+
+    connection = psycopg2.connect(host='54.211.70.104',
+                    database='bubblebreaker',
+                    user = 'postgres',
+                    password= = 'postgres'
+                    )
+    cursor = connection.cursor()
+except:
+    print("Error connecting to database!")
+    return -1
+
+
+#cassandra_cluster_ips = ["54.211.70.104"]
+#cluster = Cluster(cassandra_cluster_ips)
 
 
 '''
@@ -41,7 +56,7 @@ spark = SparkSession.builder \
 sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3a://gdelt-open-data/events/201[4-8]*')
-mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/2018072000*.mentions.csv')
+mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
 #mentionRDD = sc.textFile(sys.argv[1])
 mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
 mentionRDD.cache()
@@ -53,7 +68,7 @@ mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
                                     event_time_date = x[1],
                                     mention_src_name = x[4]))
 
-gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/2018072000*.gkg.csv')
+gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
 #gkgRDD = sc.textFile(sys.argv[2])
 gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
 gkgRDD.cache()
@@ -111,6 +126,18 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
 explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
 
+#themeDF = explodedDF.groupBy('theme')
+#themeDF.show()
+
+#resultDF = themeDF.select('theme', themeDF.count().alias('num_mentions'), themeDF.agg(avg(col('mention_doc_tone'))).alias('avg'),
+#themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
+#)
+
+sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:25-07')]
+testDF = sqlContext.createDataFrame(sampleData, schema=["theme","num_mentions","avg","quantiles","bin_vals","time"])
+testDF.show()
+
+
 #Assume the exploded DF is explodedDF
 sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
 
@@ -127,21 +154,37 @@ avgToneDF = sqlContext.sql("""SELECT mention_id,
                             GROUP BY theme
                             """)
 '''
+'''
 avgToneDF = sqlContext.sql("""SELECT
-                            AVG(mention_doc_tone)
+                            theme,
+                            AVG(mention_doc_tone) WITHIO,
+                            percentile_desc
+
                             FROM temp3
                             GROUP BY theme
                             """)
 
+
 avgToneDF.show()
 table_name = "test"
 avgTone = avgToneDF.rdd.map(list)
-avgTone.saveToCassandra("bubble-breaker", table_name)
+'''
+#avgTone.saveToCassandra("bubble-breaker", table_name)
 #first10 = explodedDF.take(10)
 #for t in first10:
 #    print t
 
+db_properties = {}
+config = configparser.ConfigParser()
+config.read("db_properties.ini")
+db_prop = config['postgres']
+db_url = db_prop['url']
+db_properties['username'] = db_prop['username']
+db_properties['password'] = db_prop['password']
+db_properties['url'] = db_prop['url']
+db_properties['driver'] = db_prop['driver']
 
+testDF.write.jdbc(url=db_url, table='bubblebreaker_schema.tones_table',mode='overwrite',properties=db_properties)
 
 '''
 #Count the number of
