@@ -177,6 +177,8 @@ db_properties = {}
 config = configparser.ConfigParser()
 config.read("db_properties.ini")
 db_prop = config['postgresql']
+for k in db_prop:
+    print k
 db_url = db_prop['url']
 db_properties['username'] = db_prop['username']
 db_properties['password'] = db_prop['password']
