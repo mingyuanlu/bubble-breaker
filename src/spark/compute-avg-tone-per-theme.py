@@ -79,7 +79,7 @@ def loadTopicNames(listOfFiles):
 sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3n://gdelt-open-data/events/201[4-8]*')
-mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
+mentionRDD = sc.textFile('s3n://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
 #mentionRDD = sc.textFile(sys.argv[1])
 mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
 mentionRDD.cache()
@@ -91,7 +91,7 @@ mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
                                     event_time_date = x[1],
                                     mention_src_name = x[4]))
 
-gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
+gkgRDD = sc.textFile('s3n://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
 #gkgRDD = sc.textFile(sys.argv[2])
 gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
 gkgRDD.cache()
