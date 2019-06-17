@@ -145,14 +145,13 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
 explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
 
-themeDF = explodedDF.groupBy('theme')
-themeDF.show()
+#themeDF = explodedDF.groupBy('theme')
+#themeDF.show()
 
-resultDF = themeDF.select('theme', themeDF.count().alias('num_mentions'), themeDF.agg(avg(col('mention_doc_tone'))).alias('avg'),
-themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
-)
-
-sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:35')]
+#resultDF = themeDF.select('theme', themeDF.count().alias('num_mentions'), #themeDF.agg(avg(col('mention_doc_tone'))).alias('avg'),
+#themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
+#
+sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:40')]
 testDF = sqlContext.createDataFrame(sampleData, schema=["theme","num_mentions","avg","quantiles","bin_vals","time"])
 testDF.show()
 
