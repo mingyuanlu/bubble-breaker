@@ -48,13 +48,16 @@ spark = SparkSession.builder \
 # Set HDFS configurations
 sc=spark.sparkContext
 hadoop_conf=sc._jsc.hadoopConfiguration()
-hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-hadoop_conf.set("fs.s3a.access.key", access_id)
-hadoop_conf.set("fs.s3a.secret.key", access_key)
+#hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+#hadoop_conf.set("", access_id)
+#hadoop_conf.set("fs.s3a.secret.key", access_key)
 
-#hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
-#hadoop_conf.set("fs.s3n.awsAccessKeyId", access_id)
-#hadoop_conf.set("fs.s3n.awsSecretAccessKey", access_key)
+#hadoop_conf.set("fs.s3a.access.key", access_id)
+#hadoop_conf.set("fs.s3a.secret.key", access_key)
+
+hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
+hadoop_conf.set("fs.s3n.awsAccessKeyId", access_id)
+hadoop_conf.set("fs.s3n.awsSecretAccessKey", access_key)
 
 '''
 def loadTopicNames(listOfFiles):
