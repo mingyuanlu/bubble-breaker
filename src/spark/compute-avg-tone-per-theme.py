@@ -55,13 +55,13 @@ hadoop_conf=sc._jsc.hadoopConfiguration()
 #hadoop_conf.set("fs.s3a.access.key", access_id)
 #hadoop_conf.set("fs.s3a.secret.key", access_key)
 
-#hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
-#hadoop_conf.set("fs.s3n.awsAccessKeyId", access_id)
-#hadoop_conf.set("fs.s3n.awsSecretAccessKey", access_key)
+hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
+hadoop_conf.set("fs.s3n.awsAccessKeyId", access_id)
+hadoop_conf.set("fs.s3n.awsSecretAccessKey", access_key)
 
-hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
-hadoop_conf.set("fs.s3.awsAccessKeyId", access_id)
-hadoop_conf.set("fs.s3.awsSecretAccessKey", access_key)
+#hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
+#hadoop_conf.set("fs.s3.awsAccessKeyId", access_id)
+#hadoop_conf.set("fs.s3.awsSecretAccessKey", access_key)
 
 '''
 def loadTopicNames(listOfFiles):
@@ -79,7 +79,7 @@ def loadTopicNames(listOfFiles):
 sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3n://gdelt-open-data/events/201[4-8]*')
-mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
+mentionRDD = sc.textFile('s3://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
 #mentionRDD = sc.textFile(sys.argv[1])
 mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
 mentionRDD.cache()
@@ -91,7 +91,7 @@ mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
                                     event_time_date = x[1],
                                     mention_src_name = x[4]))
 
-gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
+gkgRDD = sc.textFile('s3://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
 #gkgRDD = sc.textFile(sys.argv[2])
 gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
 gkgRDD.cache()
