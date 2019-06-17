@@ -36,12 +36,11 @@ import psycopg2
 
 
 # Set Spark configurations
-'''
+
 config = configparser.ConfigParser()
 config.read(os.path.expanduser('~/.aws/credentials'))
 access_id = config.get('default', "aws_access_key_id")
 access_key = config.get('default', "aws_secret_access_key")
-'''
 spark = SparkSession.builder \
     .appName("buuble-breaker") \
     .config("spark.executor.memory", "1gb") \
@@ -49,12 +48,12 @@ spark = SparkSession.builder \
 
 # Set HDFS configurations
 sc=spark.sparkContext
-'''
+
 hadoop_conf=sc._jsc.hadoopConfiguration()
 hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 hadoop_conf.set("fs.s3a.access.key", access_id)
 hadoop_conf.set("fs.s3a.secret.key", access_key)
-'''
+
 #hadoop_conf.set("fs.s3a.access.key", access_id)
 #hadoop_conf.set("fs.s3a.secret.key", access_key)
 
@@ -82,7 +81,7 @@ def loadTopicNames(listOfFiles):
 sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3n://gdelt-open-data/events/201[4-8]*')
-mentionRDD = sc.textFile('s3n://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
+mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
 #mentionRDD = sc.textFile(sys.argv[1])
 mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
 mentionRDD.cache()
@@ -94,7 +93,7 @@ mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
                                     event_time_date = x[1],
                                     mention_src_name = x[4]))
 
-gkgRDD = sc.textFile('s3n://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
+gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
 #gkgRDD = sc.textFile(sys.argv[2])
 gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
 gkgRDD.cache()
