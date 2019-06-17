@@ -55,76 +55,76 @@ spark = SparkSession.builder \
 sc=spark.sparkContext
 
 #dataRDD = sc.textFile('s3a://gdelt-open-data/events/201[4-8]*')
-mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
-#mentionRDD = sc.textFile(sys.argv[1])
-mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
-mentionRDD.cache()
-mentionRDD  = mentionRDD.map(lambda x : x.split('\t'))
-mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
-                                    mention_id = x[5],
-                                    mention_doc_tone = x[13],
-                                    mention_time_date = x[2],
-                                    event_time_date = x[1],
-                                    mention_src_name = x[4]))
-
-gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
-#gkgRDD = sc.textFile(sys.argv[2])
-gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
-gkgRDD.cache()
-gkgRDD = gkgRDD.map(lambda x: x.split('\t'))
-gkgRowRDD = gkgRDD.map(lambda x : Row(src_common_name = x[3],
-                                    doc_id = x[4],
-                                    #themes = map(lambda s: s.split(';')[:-1], x[7])
-                                    #themes = x[7].map(lambda x: x.split(';')[:-1])
-                                    themes = x[7].split(';')[:-1]
-                                    ))
-
-
-
-'''
-rowRDD = mentionRDD.map(lambda x : Row(date = x[1],
-                                    month = x[2],
-                                    year = x[3],
-                                    country = x[51],
-                                    actortype1 = x[12],
-                                    actortype2 = x[13],
-                                    goldstein_scale = x[30],
-                                    num_mentions = x[31],
-                                    tone = x[34],
-                                    event_id = x[0],
-                                    mention_source = x[57]))
-'''
+#mentionRDD = sc.textFile('s3a://gdelt-open-data/v2/mentions/201807200000*.mentions.csv')
+##mentionRDD = sc.textFile(sys.argv[1])
+#mentionRDD = mentionRDD.map(lambda x: x.encode("utf", "ignore"))
+#mentionRDD.cache()
+#mentionRDD  = mentionRDD.map(lambda x : x.split('\t'))
+#mentionRowRDD = mentionRDD.map(lambda x : Row(event_id = x[0],
+#                                    mention_id = x[5],
+#                                    mention_doc_tone = x[13],
+#                                    mention_time_date = x[2],
+#                                    event_time_date = x[1],
+#                                    mention_src_name = x[4]))
+#
+#gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
+##gkgRDD = sc.textFile(sys.argv[2])
+#gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
+#gkgRDD.cache()
+#gkgRDD = gkgRDD.map(lambda x: x.split('\t'))
+#gkgRowRDD = gkgRDD.map(lambda x : Row(src_common_name = x[3],
+#                                    doc_id = x[4],
+#                                    #themes = map(lambda s: s.split(';')[:-1], x[7])
+#                                    #themes = x[7].map(lambda x: x.split(';')[:-1])
+#                                    themes = x[7].split(';')[:-1]
+#                                    ))
+#
+#
+#
+#'''
+#rowRDD = mentionRDD.map(lambda x : Row(date = x[1],
+#                                    month = x[2],
+#                                    year = x[3],
+#                                    country = x[51],
+#                                    actortype1 = x[12],
+#                                    actortype2 = x[13],
+#                                    goldstein_scale = x[30],
+#                                    num_mentions = x[31],
+#                                    tone = x[34],
+#                                    event_id = x[0],
+#                                    mention_source = x[57]))
+#'''
 sqlContext = SQLContext(sc)
-
-#schemaDF = sqlContext.createDataFrame(rowRDD)
-mentionDF = sqlContext.createDataFrame(mentionRowRDD)
-gkgDF     = sqlContext.createDataFrame(gkgRowRDD)
-
-#sqlContext.registerDataFrameAsTable(schemaDF, 'temp')
-sqlContext.registerDataFrameAsTable(mentionDF, 'temp1')
-sqlContext.registerDataFrameAsTable(gkgDF, 'temp2')
-
-count = mentionDF.groupBy('event_id').count().cache()
-top10 = count.take(10)
-for result in top10:
-     print("%s: %d") % (result[0], result[1])
-
-df1 = mentionDF.alias('df1')
-df2 = gkgDF.alias('df2')
-
-joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*', 'df2.src_common_name','df2.themes')
-
-#joinedDF = mentionDF.join(gkgDF, mentionDF("mention_id") == gkgDF("doc_id"), "inner") #.select("code", "date")
-joinedDF.show()
-
-theme_array = [row.themes for row in joinedDF.collect()]
-#print theme_array
-#theme_array = []
-#joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
-#joinedDF = joinedDF.select()
-#joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
-explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
-
+#
+##schemaDF = sqlContext.createDataFrame(rowRDD)
+#mentionDF = sqlContext.createDataFrame(mentionRowRDD)
+#gkgDF     = sqlContext.createDataFrame(gkgRowRDD)
+#
+##sqlContext.registerDataFrameAsTable(schemaDF, 'temp')
+#sqlContext.registerDataFrameAsTable(mentionDF, 'temp1')
+#sqlContext.registerDataFrameAsTable(gkgDF, 'temp2')
+#
+#count = mentionDF.groupBy('event_id').count().cache()
+#top10 = count.take(10)
+#for result in top10:
+#     print("%s: %d") % (result[0], result[1])
+#
+#df1 = mentionDF.alias('df1')
+#df2 = gkgDF.alias('df2')
+#
+#joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*', 'df2.src_common_name','df2.themes')
+#
+##joinedDF = mentionDF.join(gkgDF, mentionDF("mention_id") == gkgDF("doc_id"), "inner") #.select("code", "date")
+#joinedDF.show()
+#
+#theme_array = [row.themes for row in joinedDF.collect()]
+##print theme_array
+##theme_array = []
+##joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
+##joinedDF = joinedDF.select()
+##joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
+#explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
+#
 #themeDF = explodedDF.groupBy('theme')
 #themeDF.show()
 
@@ -138,7 +138,7 @@ testDF.show()
 
 
 #Assume the exploded DF is explodedDF
-sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
+#sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
 
 #Get average of tone for each theme
 '''
@@ -172,7 +172,7 @@ avgTone = avgToneDF.rdd.map(list)
 #first10 = explodedDF.take(10)
 #for t in first10:
 #    print t
-'''
+
 db_properties = {}
 config = configparser.ConfigParser()
 config.read("db_properties.ini")
@@ -184,7 +184,7 @@ db_properties['url'] = db_prop['url']
 db_properties['driver'] = db_prop['driver']
 
 testDF.write.jdbc(url=db_url, table='bubblebreaker_schema.tones_table',mode='overwrite',properties=db_properties)
-'''
+
 '''
 #Count the number of
 filteredDF = sqlContext.sql("""SELECT CAST(date AS INTEGER),
