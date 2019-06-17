@@ -59,6 +59,10 @@ hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem
 hadoop_conf.set("fs.s3n.awsAccessKeyId", access_id)
 hadoop_conf.set("fs.s3n.awsSecretAccessKey", access_key)
 
+hadoop_conf.set("fs.s3.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
+hadoop_conf.set("fs.s3.awsAccessKeyId", access_id)
+hadoop_conf.set("fs.s3.awsSecretAccessKey", access_key)
+
 '''
 def loadTopicNames(listOfFiles):
     topicNames = {}
