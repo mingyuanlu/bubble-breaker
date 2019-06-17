@@ -157,7 +157,7 @@ explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'ment
 #resultDF = themeDF.select('theme', themeDF.count().alias('num_mentions'), #themeDF.agg(avg(col('mention_doc_tone'))).alias('avg'),
 #themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
 #
-sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:55g')]
+sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:56')]
 testDF = sqlContext.createDataFrame(sampleData, schema=["theme","num_mentions","avg","quantiles","bin_vals","time"])
 testDF.show()
 
