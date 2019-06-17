@@ -7,7 +7,7 @@ import os
 from pyspark.sql import Row
 from pyspark.sql import SparkSession, SQLContext, Row
 import configparser
-from entity_codes import country_names, category_names
+#from entity_codes import country_names, category_names
 #from configs import cassandra_cluster_ips
 from pyspark.sql.functions import udf, col, explode, avg
 from pyspark.sql import DataFrameStatFunctions as statFunc
@@ -24,7 +24,7 @@ try:
     connection = psycopg2.connect(host='54.211.70.104',
                     database='bubblebreaker',
                     user = 'postgres',
-                    password= = 'postgres'
+                    password = 'postgres'
                     )
     cursor = connection.cursor()
 except:
