@@ -151,12 +151,9 @@ theme_array = [row.themes for row in joinedDF.collect()]
 #joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
 explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
 
+
 #themeDF = explodedDF.groupBy('theme')
 #themeDF.show()
-themeDF = sqlContext.sql("""SELECT * FROM explodedDF GROUP BY theme""")
-med = themeDF.approxQuantile("mention_doc_tone", [0.5], 0.25)
-print("type: %s") % (type(med))
-med.show()
 
 #resultDF = themeDF.select('theme', themeDF.count().alias('num_mentions'), #themeDF.agg(avg(col('mention_doc_tone'))).alias('avg'),
 #themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
@@ -168,7 +165,13 @@ testDF.show()
 
 
 #Assume the exploded DF is explodedDF
-#sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
+sqlContext.registerDataFrameAsTable(explodedDF, 'temp3')
+
+themeDF = sqlContext.sql("""SELECT * FROM temp3 GROUP BY theme""")
+med = themeDF.approxQuantile("mention_doc_tone", [0.5], 0.25)
+print("type: %s") % (type(med))
+med.show()
+
 
 #Get average of tone for each theme
 '''
