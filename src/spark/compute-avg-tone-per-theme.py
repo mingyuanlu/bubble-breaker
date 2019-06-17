@@ -21,7 +21,7 @@ import psycopg2
 
 try:
 
-    connection = psycopg2.connect(host='3.215.225.40'
+    connection = psycopg2.connect(host='3.215.225.40',
                     user = 'postgres',
                     password = 'postgres'
                     )
