@@ -190,7 +190,8 @@ testDF.write.format("jdbc").options(
 url=db_properties['url'],
 dbtable='bubblebreaker_schema.tones_table',
 user='postgres',
-password='postgres'
+password='postgres',
+stringtype="unspecified"
 ).mode('append').save()
 '''
 
