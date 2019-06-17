@@ -29,7 +29,7 @@ try:
     cursor = connection.cursor()
 except:
     print("Error connecting to database!")
-    return -1
+    exit(1)
 
 
 #cassandra_cluster_ips = ["54.211.70.104"]
