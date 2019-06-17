@@ -94,7 +94,7 @@ rowRDD = mentionRDD.map(lambda x : Row(date = x[1],
                                     event_id = x[0],
                                     mention_source = x[57]))
 '''
-qlContext = SQLContext(sc)
+sqlContext = SQLContext(sc)
 
 #schemaDF = sqlContext.createDataFrame(rowRDD)
 mentionDF = sqlContext.createDataFrame(mentionRowRDD)
