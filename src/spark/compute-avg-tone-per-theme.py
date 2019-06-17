@@ -132,7 +132,7 @@ sqlContext = SQLContext(sc)
 #themeDF.agg(statFunc.approxQuantile("mention_doc_tone"))
 #)
 
-sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:25')]
+sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:30')]
 testDF = sqlContext.createDataFrame(sampleData, schema=["theme","num_mentions","avg","quantiles","bin_vals","time"])
 testDF.show()
 
