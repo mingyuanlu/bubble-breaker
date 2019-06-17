@@ -35,6 +35,27 @@ import psycopg2
 #cluster = Cluster(cassandra_cluster_ips)
 
 
+# Set Spark configurations
+config = configparser.ConfigParser()
+config.read(os.path.expanduser('~/.aws/credentials'))
+access_id = config.get('default', "aws_access_key_id")
+access_key = config.get('default', "aws_secret_access_key")
+spark = SparkSession.builder \
+    .appName("buuble-breaker") \
+    .config("spark.executor.memory", "1gb") \
+    .getOrCreate()
+
+# Set HDFS configurations
+sc=spark.sparkContext
+hadoop_conf=sc._jsc.hadoopConfiguration()
+hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+hadoop_conf.set("fs.s3a.access.key", access_id)
+hadoop_conf.set("fs.s3a.secret.key", access_key)
+
+#hadoop_conf.set("fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem")
+#hadoop_conf.set("fs.s3n.awsAccessKeyId", access_id)
+#hadoop_conf.set("fs.s3n.awsSecretAccessKey", access_key)
+
 '''
 def loadTopicNames(listOfFiles):
     topicNames = {}
@@ -47,10 +68,6 @@ def loadTopicNames(listOfFiles):
 '''
 
 
-spark = SparkSession.builder \
-    .appName("buuble-breaker") \
-    .config("spark.executor.memory", "1gb") \
-    .getOrCreate()
 
 sc=spark.sparkContext
 
