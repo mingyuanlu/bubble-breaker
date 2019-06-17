@@ -21,8 +21,7 @@ import psycopg2
 
 try:
 
-    connection = psycopg2.connect(host='54.211.70.104',
-                    database='bubblebreaker',
+    connection = psycopg2.connect(host='3.215.225.40
                     user = 'postgres',
                     password = 'postgres'
                     )
