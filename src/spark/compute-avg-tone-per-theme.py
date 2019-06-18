@@ -145,7 +145,7 @@ def main(sc):
     #joinedDF = mentionDF.join(gkgDF, mentionDF("mention_id") == gkgDF("doc_id"), "inner") #.select("code", "date")
     joinedDF.show()
 
-    theme_array = [row.themes for row in joinedDF.collect()]
+    #theme_array = [row.themes for row in joinedDF.collect()]
     #print theme_array
     #theme_array = []
     #joinedDF.select(explode(joinedDF.themes.split(';')[:-1]).alias("theme")).collect()
@@ -153,6 +153,8 @@ def main(sc):
     #joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
     explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
 
+    num_mentions_df = explodedDF.groupBy('theme','mention_time_date').count().cache()
+    num_mentions_df.show()
 
 
     #themeDF = explodedDF.groupBy('theme')
@@ -228,15 +230,16 @@ def main(sc):
     db_properties['driver'] = db_prop['driver']
 
     #testDF.write.jdbc(url=db_url, table='bubblebreaker_schema.tones_table',mode='overwrite',properties=db_properties)
-
+'''
     testDF.write.format("jdbc").options(
+
     url=db_properties['url'],
     dbtable='bubblebreaker_schema.tones_table',
     user='postgres',
     password='postgres',
     stringtype="unspecified"
     ).mode('append').save()
-
+'''
     '''
 
     #Count the number of
