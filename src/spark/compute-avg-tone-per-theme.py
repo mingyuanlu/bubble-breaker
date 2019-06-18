@@ -153,10 +153,13 @@ def main(sc):
     #joinedDF.select('event_id', 'mention_doc_tone', explode(joinedDF.themes).alias("theme")).show()
     explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone', 'mention_time_date', 'event_time_date', 'mention_src_name', 'src_common_name', explode(joinedDF.themes).alias("theme"))
 
-    num_mentions_df = explodedDF.groupBy('theme','mention_time_date').count().cache()
-    num_mentions_df.show()
+    #num_mentions_df = explodedDF.groupBy('theme', 'mention_time_date').count().cache()
+    #num_mentions_df.show()
 
+    agg_df = explodedDF.groupBy('theme', 'mention_time_date').agg(count(*), avg('mention_doc_tone'))
 
+    agg_df.show()
+    
     #themeDF = explodedDF.groupBy('theme')
     #themeDF.show()
 
