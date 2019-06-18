@@ -9,7 +9,7 @@ from pyspark.sql import SparkSession, SQLContext, Row
 import configparser
 #from entity_codes import country_names, category_names
 #from configs import cassandra_cluster_ips
-from pyspark.sql.functions import udf, col, explode, avg
+from pyspark.sql.functions import udf, col, explode, avg, count
 from pyspark.sql import DataFrameStatFunctions as statFunc
 from pyspark.sql.types import StringType
 #from cassandra.cluster import Cluster
@@ -159,7 +159,7 @@ def main(sc):
     agg_df = explodedDF.groupBy('theme', 'mention_time_date').agg(count(*), avg('mention_doc_tone'))
 
     agg_df.show()
-    
+
     #themeDF = explodedDF.groupBy('theme')
     #themeDF.show()
 
