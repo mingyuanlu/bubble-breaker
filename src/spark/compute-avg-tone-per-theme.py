@@ -156,7 +156,7 @@ def main(sc):
     #num_mentions_df = explodedDF.groupBy('theme', 'mention_time_date').count().cache()
     #num_mentions_df.show()
 
-    agg_df = explodedDF.groupBy('theme', 'mention_time_date').agg(count(*), avg('mention_doc_tone'))
+    agg_df = explodedDF.groupBy('theme', 'mention_time_date').agg(count('*'), avg('mention_doc_tone'))
 
     agg_df.show()
 
