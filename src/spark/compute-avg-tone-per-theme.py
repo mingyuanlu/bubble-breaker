@@ -230,7 +230,7 @@ def main(sc):
     db_properties['driver'] = db_prop['driver']
 
     #testDF.write.jdbc(url=db_url, table='bubblebreaker_schema.tones_table',mode='overwrite',properties=db_properties)
-'''
+    '''
     testDF.write.format("jdbc").options(
 
     url=db_properties['url'],
@@ -239,7 +239,7 @@ def main(sc):
     password='postgres',
     stringtype="unspecified"
     ).mode('append').save()
-'''
+    '''
     '''
 
     #Count the number of
