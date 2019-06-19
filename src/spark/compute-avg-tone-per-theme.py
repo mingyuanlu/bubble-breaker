@@ -1,5 +1,3 @@
-from pyspark.sql import functions
-
 import sys
 import os
 from pyspark.sql import Row
@@ -7,13 +5,12 @@ from pyspark.sql import SparkSession, SQLContext, Row
 import configparser
 from pyspark.sql.functions import udf, col, explode, avg, count, max, min, collect_list
 from pyspark.sql.types import StringType, ArrayType, FloatType, IntegerType
-from enum import Enum
 import numpy as np
 
 
 def transform_to_timestamptz(t):
     """
-    Transform GDETL mention datetime to timestamp format 
+    Transform GDETL mention datetime to timestamp format
     (YYYY-MM-DD HH:MM:SS)  for TimescaleDB
     """
     return t[:4]+'-'+t[4:6]+'-'+t[6:8]+' '+t[8:10]+':'+t[10:12]+':'+t[12:14]
@@ -24,15 +21,14 @@ def get_quantile(data):
     """
     arr = np.array(data)
     q = np.array([0, 0.25, 0.5, 0.75, 1])
-    #print np.quantile(arr, q)
     return np.quantile(arr, q).tolist()
 
-    
+
 
 def hist_data(data):
     """
     Return number of entry in each bin for a histogram
-    of range (-10, 10) with 10 bins. Bin 0 and 11 are 
+    of range (-10, 10) with 10 bins. Bin 0 and 11 are
     under/overflow bins
     """
     minVal=-10
@@ -73,7 +69,7 @@ def main(sc):
                                         event_time_date = x[1],
                                         mention_src_name = x[4]))
 
-    
+
     #Read 'GKG" table from GDELT S3 bucket. Transform into RDD
     gkgRDD = sc.textFile('s3a://gdelt-open-data/v2/gkg/201807200000*.gkg.csv')
     gkgRDD = gkgRDD.map(lambda x: x.encode("utf", "ignore"))
@@ -102,7 +98,6 @@ def main(sc):
     #Themes and tones information are stored in two different tables
     joinedDF = df1.join(df2, df1.mention_id == df2.doc_id, "inner").select('df1.*'
                                                 , 'df2.src_common_name','df2.themes')
-    #joinedDF.show()
 
     #Each document could contain multiple themes. Explode on the themes and make a new column
     explodedDF = joinedDF.select('event_id', 'mention_id', 'mention_doc_tone'
@@ -110,20 +105,7 @@ def main(sc):
                                                 , 'mention_src_name', 'src_common_name'
                                                 , explode(joinedDF.themes).alias("theme"))
 
-    
-    #explodedDF.registerTempTable('df3')
-    #quantilesDF = sqlContext.sql("""SELECT
-    #                            COUNT(mention_doc_tone)                   AS num_mentions,
-    #                            AVG(mention_doc_tone)                     AS avg,
-    #                            MIN(mention_doc_tone)                     AS quantile_0,
-    #                            percentile(mention_doc_tone, 0.25) AS quantile_25,
-    #                            percentile(mention_doc_tone, 0.5)  AS quantile_50,
-    #                            percentile(mention_doc_tone, 0.75) AS quantile_75,
-    #                            MAX(mention_doc_tone)                     AS quantile_100
-    #                            FROM df3 GROUP BY theme, mention_time_date""")
 
-
-    #quantilesDF.show()
 
     hist_data_udf = udf(hist_data, ArrayType(IntegerType()))
     get_quantile_udf = udf(get_quantile, ArrayType(FloatType()))
@@ -132,9 +114,8 @@ def main(sc):
     testDF = explodedDF.groupBy('theme', 'mention_time_date').agg(
             count('*').alias('num_mentions'),
             avg('mention_doc_tone').alias('avg'),
-            collect_list('mention_doc_tone').alias('tones') 
+            collect_list('mention_doc_tone').alias('tones')
             )
-    #testDF.show()
 
     #Histogram and compute  quantiles for tones
     histDF = testDF.withColumn("bin_vals", hist_data_udf('tones')) \
@@ -144,12 +125,7 @@ def main(sc):
     #histDF.show()
     finalDF = histDF.select('theme', 'num_mentions', 'avg', 'quantiles', 'bin_vals', col('mention_time_date').alias('time'))
     finalDF.show()
-    
 
-
-    #sampleData = [('test_theme',5,0,[-2,-1,1,2],[0,1,1,2,1,0,6,0],'2016-06-22 19:10:57')]
-    #testDF = sqlContext.createDataFrame(sampleData, schema=["theme","num_mentions","avg","quantiles","bin_vals","time"])
-    #testDF.show()
 
     #Preparing to write to TimescaleDB
     db_properties = {}
@@ -162,7 +138,7 @@ def main(sc):
     db_properties['url'] = db_prop['url']
     db_properties['driver'] = db_prop['driver']
 
-    #Write to table 
+    #Write to table
     finalDF.write.format("jdbc").options(
     url=db_properties['url'],
     dbtable='bubblebreaker_schema.tones_table',
@@ -170,7 +146,7 @@ def main(sc):
     password='postgres',
     stringtype="unspecified"
     ).mode('append').save()
-   
+
 
 if __name__ == '__main__':
     """
@@ -193,4 +169,3 @@ if __name__ == '__main__':
     hadoop_conf.set("fs.s3a.secret.key", access_key)
 
     main(sc)
-
