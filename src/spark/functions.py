@@ -1,12 +1,21 @@
 import numpy as np
 
-
 def transform_to_timestamptz(t):
     """
     Transform GDETL mention datetime to timestamp format
-    (YYYY-MM-DD HH:MM:SS)  for TimescaleDB
+    (YYYY-MM-DD HH:MM:SS)  for TimescaleDB.
     """
     return t[:4]+'-'+t[4:6]+'-'+t[6:8]+' '+t[8:10]+':'+t[10:12]+':'+t[12:14]
+
+
+def transform_to_timestamptz_daily(t):
+    """
+    Transform GDETL mention datetime to timestamp format
+    (YYYY-MM-DD HH:MM:SS)  for TimescaleDB. Get rid of all
+    HH:MM:SS info so that rows can be easily group by timestamp
+    to obtain daily averages
+    """
+    return t[:4]+'-'+t[4:6]+'-'+t[6:8]+' 00:00:00'
 
 def get_quantile(data):
     """
@@ -73,6 +82,14 @@ def read_theme_file(theme_file):
             data = row.rstrip().split(',')
             theme_list.append(data[1])
     return theme_list
+
+def read_src_file(src_file):
+    src_list = []
+    with open(src_file) as f:
+        for row in f:
+            data = row.rstrip().split(',')
+            src_list.append(data[1])
+    return src_list
 
 
 def clean_comma(inputString):
