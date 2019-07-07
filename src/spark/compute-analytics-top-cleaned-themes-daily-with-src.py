@@ -110,6 +110,7 @@ def main(sc):
 
     #print('explodedDF num partitions: %d') % (explodedDF.rdd.getNumPartitions())
     #explodedDF.take(100)
+    explodedDF.show()
     hist_data_udf = udf(f.hist_data, ArrayType(IntegerType()))
     get_quantile_udf = udf(f.get_quantile, ArrayType(FloatType()))
     
@@ -123,7 +124,7 @@ def main(sc):
             collect_list('mention_doc_tone').alias('tones')
             )
     '''
-    
+     
     testDF2 = explodedDF.groupBy('theme', 'mention_time_date', 'src_common_name').agg(
             count('*').alias('num_mentions'),
             avg('mention_doc_tone').alias('avg'),
@@ -133,7 +134,7 @@ def main(sc):
     #testDF1.take(50)
     #testDF2.take(50)
     #print('testDF2 num partitions: %d') % (testDF2.rdd.getNumPartitions())
-
+    
     #Histogram and compute  quantiles for tones
     '''
     histDF1 = testDF1.withColumn("bin_vals", hist_data_udf('tones')) \
