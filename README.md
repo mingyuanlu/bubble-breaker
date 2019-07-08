@@ -1,7 +1,7 @@
 # Bubble Breaker
 > ***Break filter bubbles by gaining diverse perspectives on global news***
 
-This project is completed as part of the the Insight Data Engineering program (New York, Summer 2019).
+This project is completed as part of the Insight Data Engineering program (New York, Summer 2019).
 Visit [big-data-compute.com](https://big-data-compute.com) to see the interactive webpage.
 
 # Introduction
