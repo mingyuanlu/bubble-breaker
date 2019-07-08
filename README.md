@@ -27,6 +27,7 @@ Since the news data is naturally timestamped, it makes sense to query the data i
 To set up a TimescaleDB database, follow the instructions on https://www.timescale.com. The schema files used can be found in `db`. For bubble-breaker, you can create two tables on a machine where PostgreSQL is installed by (assuming the username of PostgreSQL is 'postgres')
 
 `sudo psql -U postgres -d bubblebreaker -a -f bubblebreaker.sql` 
+
 `sudo psql -U postgres -d bubblebreaker -a -f bubblebreaker_src.sql` 
 
 
