@@ -2,7 +2,7 @@ import numpy as np
 
 def transform_to_timestamptz(t):
     """
-    Transform GDETL mention datetime to timestamp format
+    Transform GDELT mention datetime to timestamp format
     (YYYY-MM-DD HH:MM:SS)  for TimescaleDB.
     """
     return t[:4]+'-'+t[4:6]+'-'+t[6:8]+' '+t[8:10]+':'+t[10:12]+':'+t[12:14]
@@ -10,7 +10,7 @@ def transform_to_timestamptz(t):
 
 def transform_to_timestamptz_daily(t):
     """
-    Transform GDETL mention datetime to timestamp format
+    Transform GDELT mention datetime to timestamp format
     (YYYY-MM-DD HH:MM:SS)  for TimescaleDB. Get rid of all
     HH:MM:SS info so that rows can be easily group by timestamp
     to obtain daily averages
@@ -52,6 +52,9 @@ def hist_data(data):
     return bins
 
 def is_number(s):
+    """
+    Check if string can be converted to numneric
+    """
     try:
         float(s)
         return True
@@ -59,15 +62,24 @@ def is_number(s):
         return False
 
 def is_not_empty(l):
+    """
+    Check empty element in list
+    """
     for e in l:
         if e == '':
             return False
     return True
 
 def has_no_numbers(inputString):
+    """
+    Check if input string has any numeric character
+    """
     return not(any(char.isdigit() for char in inputString))
 
 def read_tax_file(tax_file):
+    """
+    Read list of taxonomy from file
+    """
     tax_list = []
     with open(tax_file) as f:
         for row in f:
@@ -76,6 +88,9 @@ def read_tax_file(tax_file):
     return tax_list
 
 def read_theme_file(theme_file):
+    """
+    Read list of themes from file
+    """
     theme_list = []
     with open(theme_file) as f:
         for row in f:
@@ -84,6 +99,9 @@ def read_theme_file(theme_file):
     return theme_list
 
 def read_src_file(src_file):
+    """
+    Read list of news sources from file
+    """
     src_list = []
     with open(src_file) as f:
         for row in f:
@@ -93,16 +111,24 @@ def read_src_file(src_file):
 
 
 def clean_comma(inputString):
+    """
+    Return substring before a comma
+    """
     sep = ','
     return inputString.split(sep, 1)[0]
 
 def clean_comma_list(inputList):
+    """
+    Map clean_comma() to a list of strings
+    """
     return list(map(clean_comma, inputList))
 
 def clean_taxonomy(list_of_themes, rdd_list_of_tax):
-    #list_of_tax = read_tax_file(tax_file)
+    """
+    Given a list of themes and a list of taxonomy words,
+    remove taxonomy words and commas from each theme
+    """
     list_of_tax = rdd_list_of_tax.value
-    #print (list_of_tax)
     new_list_of_themes = []
     for theme in list_of_themes:
         new_theme = ''
@@ -124,6 +150,16 @@ def clean_taxonomy(list_of_themes, rdd_list_of_tax):
 
     return new_list_of_themes
 
+def pick_first_two(l):
+    """
+    Return first two elements of a list
+    """
+    return l[:2]
 
+def get_len(l):
+    """
+    Return length of a list
+    """
+    return len(l)
         
 
