@@ -13,6 +13,41 @@ Social tribalism is a problem in this age of social media. The first step toward
 ![](./images/tone-evolution.png)
 
 
+# Project Structure
+```
+.
+├── README.md
+├── data
+│   ├── list-of-tax-2018.csv
+│   ├── list-of-top-src-2018.csv
+│   ├── list-of-top-themes-2015to9-1000.csv
+│   └── list-of-top-themes-2015to9-500.csv
+├── db
+│   ├── bubblebreaker.sql
+│   └── bubblebreaker_src.sql
+├── images
+│   ├── bubble-breaker-pipeline.png
+│   ├── tone-distribution.png
+│   └── tone-evolution.png
+├── run.sh
+└── src
+    └── spark
+        ├── compute-analytics-top-cleaned-themes-daily-with-src.py
+        ├── db_properties.ini
+        ├── db_properties_src.ini
+        ├── functions.py
+        ├── get-src-list.py
+        ├── get-taxonomy-list.py
+        ├── get-top-themes.py
+        ├── legacy
+        │   ├── compute-analytics-top-cleaned-themes.py
+        │   └── compute-avg-tone-per-theme.py
+        ├── run-generate-list.sh
+        ├── run-generate-tax.sh
+        └── run.sh
+
+```
+
 # Data
 The Global Database of Events, Language, and Tone (GDELT) dataset gathers news reports from all over the globe, and identifies the people, locations, organizations, themes, sources, emotions, counts, quotes, images and events involved. The dataset amounts to ~1.3TB per year, and is updated every 15 minute. The sentiment scores, or "tones", in this project are obtained entirely from GDELT's sentiment analyses on new texts.
 
