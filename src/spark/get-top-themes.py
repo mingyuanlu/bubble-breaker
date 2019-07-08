@@ -18,7 +18,7 @@ def main(sc, out_file_name):
     """
 
     #Obtain list of taxonomy words for theme cleaning
-    tax_file = 'list-of-tax-2018.csv'
+    tax_file = os.environ['TAX_LIST_FILE']
     tax_list = f.read_tax_file(tax_file)
     rdd_tax_list = sc.broadcast(tax_list)
 

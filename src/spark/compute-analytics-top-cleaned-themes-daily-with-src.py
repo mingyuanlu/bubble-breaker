@@ -16,17 +16,17 @@ def main(sc):
     """
 
     #Obtain taxonomy dictionary and broadcast to the workers
-    tax_file = 'list-of-tax-2018.csv'
+    tax_file = os.environ['TAX_LIST_FILE']
     tax_list = f.read_tax_file(tax_file)
     rdd_tax_list = sc.broadcast(tax_list)
 
     #Obtain list of top 500 themes used for filtering
-    theme_file = 'list-of-top-themes-2015to9-500.csv'
+    theme_file = os.environ['THEME_LIST_FILE']
     theme_list = f.read_theme_file(theme_file)
     rdd_theme_list = sc.broadcast(theme_list)
 
     #Obtainb list of top new src used for filtering
-    src_file = 'list-of-top-src.csv'
+    src_file = os.environ['SRC_LIST_FILE']
     src_list = f.read_src_file(src_file)
     rdd_src_list = sc.broadcast(src_list)
 
