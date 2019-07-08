@@ -10,4 +10,4 @@ spark-submit \
    --conf "spark.driver.extraJavaOptions=-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps" \
    --py-files functions.py \
    --total-executor-cores 4 \
-   $1
+   $1 $2
